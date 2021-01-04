@@ -35,7 +35,7 @@
             "category": "feature",
             "icon": {
                 "name": "fas fa-wrench",
-                "background": "#117187",
+                "backgroundColor": "#117187",
                 "color": "#fff"
             }
         }
