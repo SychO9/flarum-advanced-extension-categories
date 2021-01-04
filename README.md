@@ -6,6 +6,8 @@
 
 [Flarum](https://github.com/flarum/flarum) Extension that adds advanced extension categorization options for admins, besides the default categorization, it allows categorizing by vendor or no categorization at all with an alphabetical order of extensions.
 
+![flarum lan_admin (18)](https://user-images.githubusercontent.com/20267363/103583037-49eeea80-4edf-11eb-9f11-2a0ccd07e427.png)
+
 ## Installation
 ```ssh
 $ composer require sycho/flarum-advanced-extension-categories
