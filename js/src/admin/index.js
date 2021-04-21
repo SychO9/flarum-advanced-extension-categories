@@ -8,8 +8,6 @@ import Dropdown from 'flarum/common/components/Dropdown';
 import Button from 'flarum/common/components/Button';
 import icon from 'flarum/common/helpers/icon';
 import saveSettings from 'flarum/admin/utils/saveSettings';
-import isExtensionEnabled from 'flarum/admin/utils/isExtensionEnabled';
-import Link from 'flarum/common/components/Link';
 import overrideGetCategorizedExtensions from './overrideGetCategorizedExtensions';
 import getCategories from './getCategories';
 import getCategoryLabels from './getCategoryLabels';
@@ -52,6 +50,7 @@ app.initializers.add(
     };
 
     app.extensionCategories = getCategories();
+    app.categorizedExtensions = overrideGetCategorizedExtensions();
     const categoryLabels = getCategoryLabels();
 
     ExtensionsWidget.prototype.controlItems = function () {
@@ -80,7 +79,7 @@ app.initializers.add(
     };
 
     override(ExtensionsWidget.prototype, 'oninit', function () {
-      this.categorizedExtensions = overrideGetCategorizedExtensions();
+      this.categorizedExtensions = app.categorizedExtensions;
     });
 
     override(ExtensionsWidget.prototype, 'content', function (original) {
@@ -92,7 +91,7 @@ app.initializers.add(
           </h2>
           <div className="ExtensionsWidget-list-controls">{this.controlItems().toArray()}</div>
         </div>,
-        original()
+        original(),
       ];
     });
 
