@@ -11,8 +11,8 @@
     ],
     "type": "flarum-extension",
     "support": {
-      "issues": "https://github.com/SychO9/flarum-advanced-extension-categories/issues",
-      "source": "https://github.com/SychO9/flarum-advanced-extension-categories"
+        "issues": "https://github.com/SychO9/flarum-advanced-extension-categories/issues",
+        "source": "https://github.com/SychO9/flarum-advanced-extension-categories"
     },
     "homepage": "https://sycho9.github.io",
     "funding": [
@@ -37,6 +37,14 @@
                 "name": "fas fa-wrench",
                 "backgroundColor": "#117187",
                 "color": "#fff"
+            }
+        },
+        "flarum-cli": {
+            "modules": {
+                "githubActions": true,
+                "prettier": true,
+                "js": true,
+                "typescript": true
             }
         }
     }
