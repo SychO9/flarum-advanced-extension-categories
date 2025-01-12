@@ -1,3 +1,4 @@
+import app from 'flarum/admin/app';
 import { override, extend } from 'flarum/common/extend';
 import AdminNav from 'flarum/admin/components/AdminNav';
 import ExtensionLinkButton from 'flarum/admin/components/ExtensionLinkButton';
@@ -8,53 +9,25 @@ import Dropdown from 'flarum/common/components/Dropdown';
 import Button from 'flarum/common/components/Button';
 import Icon from 'flarum/common/components/Icon';
 import saveSettings from 'flarum/admin/utils/saveSettings';
-import overrideGetCategorizedExtensions from './overrideGetCategorizedExtensions';
-import getCategories from './getCategories';
-import getCategoryLabels from './getCategoryLabels';
+import getCategorizedExtensions from './utils/getCategorizedExtensions';
+import getCategories from './utils/getCategories';
+import getCategoryLabels from './utils/getCategoryLabels';
+import getCategorizationOptions from './utils/getCategorizationOptions';
+import type Mithril from 'mithril';
+
+export { default as extend } from './extend';
 
 app.initializers.add(
   'sycho-advanced-extension-categories',
   (app) => {
-    const categorizationOptions = {
-      default: app.translator.trans('sycho-ace.admin.category_selection.options.default'),
-      vendor: app.translator.trans('sycho-ace.admin.category_selection.options.vendor'),
-      availability: app.translator.trans('sycho-ace.admin.category_selection.options.availability'),
-      none: app.translator.trans('sycho-ace.admin.category_selection.options.none'),
-    };
-
-    app.registry.for('sycho-advanced-extension-categories').registerSetting(function () {
-      const selectbox = this.buildSettingComponent({
-        setting: 'sycho-ace.selected-categorization',
-        label: app.translator.trans('sycho-ace.admin.category_selection.label'),
-        type: 'select',
-        options: categorizationOptions,
-        default: 'default',
-      });
-
-      const originalSaveSettings = this.saveSettings;
-      this.saveSettings = function (e) {
-        originalSaveSettings.call(this, e);
-        app.modal.show(LoadingModal);
-        window.location.reload();
-      };
-
-      return selectbox;
-    });
-
-    const saveCategorization = (value) => {
-      saveSettings({
-        'sycho-ace.selected-categorization': value,
-      }).then(() => window.location.reload());
-
-      app.modal.show(LoadingModal);
-    };
+    const categorizationOptions = getCategorizationOptions();
 
     app.extensionCategories = getCategories();
-    app.categorizedExtensions = overrideGetCategorizedExtensions();
+    app.categorizedExtensions = getCategorizedExtensions();
     app.categoryLabels = getCategoryLabels();
 
     ExtensionsWidget.prototype.controlItems = function () {
-      const items = new ItemList();
+      const items = new ItemList<Mithril.Children>();
 
       const selectedCategorization = app.data.settings['sycho-ace.selected-categorization'] ?? 'default';
 
@@ -66,7 +39,13 @@ app.initializers.add(
               <Button
                 icon={selectedCategorization === key ? 'fas fa-check' : true}
                 active={selectedCategorization === key}
-                onclick={() => saveCategorization(key)}
+                onclick={() => {
+                  saveSettings({
+                    'sycho-ace.selected-categorization': key,
+                  }).then(() => window.location.reload());
+
+                  app.modal.show(LoadingModal);
+                }}
               >
                 {categorizationOptions[key]}
               </Button>
@@ -98,7 +77,16 @@ app.initializers.add(
     });
 
     extend(ExtensionsWidget.prototype, 'extensionCategory', function (vnode, category) {
-      vnode.children[0].text = app.categoryLabels[category];
+      if (
+        vnode.children instanceof Array &&
+        vnode.children[0] instanceof Object &&
+        'children' in vnode.children[0] &&
+        vnode.children[0].children instanceof Array &&
+        vnode.children[0].children[0] instanceof Object &&
+        'children' in vnode.children[0].children[0]
+      ) {
+        vnode.children[0].children[0].children = [app.categoryLabels[category]];
+      }
     });
 
     override(AdminNav.prototype, 'extensionItems', function () {
@@ -117,7 +105,7 @@ app.initializers.add(
           const query = this.query().toUpperCase();
           const title = extension.extra['flarum-extension'].title;
 
-          if (!query || title.toUpperCase().includes(query) || extension.description.toUpperCase().includes(query)) {
+          if (!query || title.toUpperCase().includes(query) || extension.description?.toUpperCase().includes(query)) {
             items.add(
               `extension-${extension.id}`,
               <ExtensionLinkButton

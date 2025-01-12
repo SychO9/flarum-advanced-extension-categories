@@ -7,8 +7,6 @@
   "include": [
       "src/**/*",
       "../vendor/*/*/js/dist-typings/@types/**/*",
-// <CUSTOM-1>
-// </CUSTOM-1>
       "@types/**/*"
 ],
   "compilerOptions": {
@@ -17,8 +15,6 @@
     "baseUrl": ".",
     "paths": {
       "flarum/*": ["../vendor/flarum/core/js/dist-typings/*"],
-// <CUSTOM-2>
-// </CUSTOM-2>
     }
   }
 }

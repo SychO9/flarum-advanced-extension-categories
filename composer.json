@@ -4,9 +4,7 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Sami 'SychO' Mazouz",
-            "email": "ilyasmazouz@gmail.com",
-            "homepage": "https://sycho9.github.io"
+            "name": "Sami 'SychO' Mazouz"
         }
     ],
     "type": "flarum-extension",
@@ -14,13 +12,6 @@
         "issues": "https://github.com/SychO9/flarum-advanced-extension-categories/issues",
         "source": "https://github.com/SychO9/flarum-advanced-extension-categories"
     },
-    "homepage": "https://sycho9.github.io",
-    "funding": [
-        {
-            "type": "other",
-            "url": "https://www.buymeacoffee.com/sycho"
-        }
-    ],
     "require": {
         "flarum/core": "^2.0.0-beta"
     },

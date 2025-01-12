@@ -1,13 +1,14 @@
+import app from 'flarum/admin/app';
 import getCategories from './getCategories';
 
 export default function getCategoryLabels() {
-  let labels = {};
+  let labels: Record<string, string> = {};
   const categories = getCategories();
 
   Object.keys(categories).map((category) => {
     switch (app.data.settings['sycho-ace.selected-categorization']) {
       case 'default':
-        labels[category] = app.translator.trans(`core.admin.nav.categories.${category}`);
+        labels[category] = app.translator.trans(`core.admin.nav.categories.${category}`, {}, true);
         break;
 
       case 'vendor':
@@ -15,7 +16,7 @@ export default function getCategoryLabels() {
         break;
 
       default:
-        labels[category] = app.translator.trans(`sycho-ace.admin.categories.${category}`);
+        labels[category] = app.translator.trans(`sycho-ace.admin.categories.${category}`, {}, true);
     }
   });
 

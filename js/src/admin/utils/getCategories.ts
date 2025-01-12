@@ -1,4 +1,6 @@
-export default function getCategories() {
+import app from 'flarum/admin/app';
+
+export default function getCategories(): Record<string, number> {
   switch (app.data.settings['sycho-ace.selected-categorization']) {
     case 'none':
       return { none: 0 };
@@ -15,8 +17,8 @@ export default function getCategories() {
 }
 
 export function getVendors() {
-  let vendors = {};
-  let vendorsArray = [];
+  let vendors: Record<string, number> = {};
+  let vendorsArray: string[] = [];
 
   Object.keys(app.data.extensions).map((id) => {
     vendorsArray.push(id.split('-')[0]);
