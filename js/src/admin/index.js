@@ -6,7 +6,7 @@ import LoadingModal from 'flarum/admin/components/LoadingModal';
 import ItemList from 'flarum/common/utils/ItemList';
 import Dropdown from 'flarum/common/components/Dropdown';
 import Button from 'flarum/common/components/Button';
-import icon from 'flarum/common/helpers/icon';
+import Icon from 'flarum/common/components/Icon';
 import saveSettings from 'flarum/admin/utils/saveSettings';
 import overrideGetCategorizedExtensions from './overrideGetCategorizedExtensions';
 import getCategories from './getCategories';
@@ -22,7 +22,7 @@ app.initializers.add(
       none: app.translator.trans('sycho-ace.admin.category_selection.options.none'),
     };
 
-    app.extensionData.for('sycho-advanced-extension-categories').registerSetting(function () {
+    app.registry.for('sycho-advanced-extension-categories').registerSetting(function () {
       const selectbox = this.buildSettingComponent({
         setting: 'sycho-ace.selected-categorization',
         label: app.translator.trans('sycho-ace.admin.category_selection.label'),
@@ -86,7 +86,9 @@ app.initializers.add(
       return [
         <div className="ExtensionsWidget-list-heading">
           <h2 className="ExtensionsWidget-list-name">
-            <span className="ExtensionsWidget-list-icon">{icon('fas fa-puzzle-piece')}</span>
+            <span className="ExtensionsWidget-list-icon">
+              <Icon name="fas fa-puzzle-piece" />
+            </span>
             <span className="ExtensionsWidget-list-title">{app.translator.trans('sycho-ace.admin.extensions')}</span>
           </h2>
           <div className="ExtensionsWidget-list-controls">{this.controlItems().toArray()}</div>
