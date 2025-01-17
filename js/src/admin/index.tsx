@@ -85,7 +85,7 @@ app.initializers.add(
         vnode.children[0].children[0] instanceof Object &&
         'children' in vnode.children[0].children[0]
       ) {
-        vnode.children[0].children[0].children = [app.categoryLabels[category]];
+        vnode.children[0].children[0].children = app.categoryLabels[category];
       }
     });
 
